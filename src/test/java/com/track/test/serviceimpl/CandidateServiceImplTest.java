@@ -1,30 +1,34 @@
-package com.track.test;
+package com.track.test.serviceimpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import com.track.entity.Candidate;
+import com.track.exception.CandidateNotFoundException;
 import com.track.repository.CandidateRepository;
 import com.track.serviceimpl.CandidateServiceImpl;
 
-
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
-public class CandidateImplTest {
+public class CandidateServiceImplTest {
 
-	@Autowired
+	// @Autowired
+	@InjectMocks
 	public CandidateServiceImpl candidateServiceImpl;
 
-	@MockBean
+	@Mock
 	private CandidateRepository candidateRepo;
 
 	@Test
@@ -55,41 +59,33 @@ public class CandidateImplTest {
 	@Test
 	public void viewCandidate() {
 
-		 Optional<Candidate> candidate1 = Optional.of(new Candidate());
+		
 
 		Candidate candidate = new Candidate();
 
-		/*
-		 * candidate.setUserId(22); candidate.setName("manoj kumar");
-		 * candidate.setGender("male");
-		 * 
-		 * candidate.setUserName("manoj"); candidate.setPassword("123123");
-		 * 
-		 * candidate.setPrimarySkils("java"); candidate.setSecondarySkils("c");
-		 * candidate.setExperience(3); candidate.setQualification("btech");
-		 * candidate.setDesignation("developer"); candidate.setNoticePeriod(3);
-		 * candidate.setLocation("warangal"); candidate.setStatus("selected");
-		 */
+		candidate.setUserId(22);
+		candidate.setName("manoj kumar");
+		candidate.setGender("male");
 
-		 Mockito.when(candidateRepo.findById(22)).thenReturn(candidate1);
-		//when(candidateRepo.findById(22)).thenReturn(Optional.empty());
-	//	assertThat(candidateServiceImpl.viewCandidate(22)).isEqualTo(candidate1);
+		candidate.setUserName("manoj");
+		candidate.setPassword("123123");
 
-
-	}
-     
-	
-	@Test
-	public void throwExceptionWhenCandidateIdNotFound() {
-	    int id = anyInt();
-	    when(candidateRepo.findById(id)).thenReturn(Optional.empty());
-	    assertThatAnExceptionWasThrown(String.format("Quarter does not exist for id = %s!", id));
-	}
-	
-	private void assertThatAnExceptionWasThrown(String format) {
+		candidate.setPrimarySkils("java");
+		candidate.setSecondarySkils("c");
+		candidate.setExperience(3);
+		candidate.setQualification("btech");
+		candidate.setDesignation("developer");
+		candidate.setNoticePeriod(3);
+		candidate.setLocation("warangal");
+		candidate.setStatus("selected");
+		Optional<Candidate> candidate1 = Optional.of(candidate);
 		
+		Mockito.when(candidateRepo.findById(22)).thenReturn(candidate1);
+		assertThat(candidateServiceImpl.viewCandidate(22)).isEqualTo(candidate);
+
 	}
 
+	
 	@Test
 	public void viewCandidates() {
 
@@ -115,8 +111,10 @@ public class CandidateImplTest {
 		candidate2.setUserId(21);
 		candidate2.setName("manoj");
 		candidate2.setGender("male");
+
 		candidate2.setUserName("manoj");
 		candidate2.setPassword("123123");
+
 		candidate2.setPrimarySkils("java");
 		candidate2.setSecondarySkils("c");
 		candidate2.setExperience(3);
@@ -132,6 +130,22 @@ public class CandidateImplTest {
 
 		Mockito.when(candidateRepo.findAll()).thenReturn(candidateList);
 		assertThat(candidateServiceImpl.viewCandidates()).isEqualTo(candidateList);
-
 	}
-}
+		
+		
+		@Test
+		public void testNoCandidateFound() {
+			
+		List<Candidate> candiateList1= new ArrayList<>();
+		
+		when(candidateRepo.findAll()).thenReturn(candiateList1);
+		try {
+		assertNotNull( candidateServiceImpl.viewCandidates());
+		} catch (CandidateNotFoundException e) {
+		assertEquals("candidate not found",e.getMessage());
+		}
+		}
+		
+		
+		
+	}

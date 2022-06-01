@@ -1,8 +1,11 @@
 package com.track.serviceimpl;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.track.entity.Admin;
+import com.track.exception.CandidateNotFoundException;
 import com.track.repository.AdminRepository;
 import com.track.service.AdminService;
 
@@ -26,9 +29,17 @@ import com.track.service.AdminService;
 	}
 
 	@Override
-	public  Admin shareTheCandidateWithInterviewPanel(Admin admin) {
+     public Admin ShareTheCandidateWithInterviewPanel(int userId) throws CandidateNotFoundException {
 		
-		return  adminRepo.save(admin);
-	
+		Optional<Admin> candidate = adminRepo.findById(userId);
+		Admin candie = null;
+		if(candidate.isPresent()) {
+			candie = candidate.get();
+		}else {
+			throw new CandidateNotFoundException("No such candidate");
 		}
-}
+		return candie;
+	}
+	
+	
+	}

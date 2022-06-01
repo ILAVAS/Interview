@@ -6,15 +6,15 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
-import com.track.entity.User;
 
 @Component
-public class EmployeeDTO extends User {	
+public class EmployeeDTO extends UserDTO {	
 	
 	
 	private String type;
 	
 	private String location;
+	private boolean panelMember;
 	
 
 		
@@ -22,14 +22,23 @@ public class EmployeeDTO extends User {
 		super();
 	}
 
-	public EmployeeDTO( String type, String location ) {
+	public EmployeeDTO( String type, String location, boolean panelMember) {
 		super();
 		
 		this.type = type;
 		this.location = location;
+		this.panelMember = panelMember;
 	}
 
 	
+	public boolean isPanelMember() {
+		return panelMember;
+	}
+
+	public void setPanelMember(boolean panelMember) {
+		this.panelMember = panelMember;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -48,15 +57,29 @@ public class EmployeeDTO extends User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(location, getName(), type);
+		return Objects.hash(location, panelMember, type);
 	}
 
 	
 
 	@Override
 	public String toString() {
-		return "EmployeeDTO [ type=" + type + ", location=" + location + "]";
+		return "EmployeeDTO [ type=" + type + ", location=" + location + ", panelMember=" + panelMember + "]";
 	}
-			
-}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeDTO other = (EmployeeDTO) obj;
+		return Objects.equals(location, other.location) && panelMember == other.panelMember
+				&& Objects.equals(type, other.type);
+	}
+
+
+		
+	}

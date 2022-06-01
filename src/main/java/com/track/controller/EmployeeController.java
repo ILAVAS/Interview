@@ -3,7 +3,6 @@ package com.track.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +37,6 @@ public class EmployeeController {
 	public Employee deleteEmployee(@PathVariable("id") int userId) throws EmployeeNotFoundException {
 		return employeeService.deleteEmployee(userId);
 	}
-	
 	
 	@GetMapping(value = "/getAll")
 	public List<Employee> getEmployees() throws EmployeeNotFoundException{

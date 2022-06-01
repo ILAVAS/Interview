@@ -1,6 +1,8 @@
 package com.track.service;
 
 import com.track.entity.Admin;
+import com.track.exception.CandidateNotFoundException;
+
 
 public interface AdminService {
 
@@ -8,7 +10,9 @@ public interface AdminService {
 
     public Admin scheduleCandidateInterview( Admin admin);
 
-	public Admin shareTheCandidateWithInterviewPanel( Admin admin);
+	public Admin ShareTheCandidateWithInterviewPanel(int userId) throws CandidateNotFoundException;
+
 	
-	
+
+
 }
